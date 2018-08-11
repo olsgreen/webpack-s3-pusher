@@ -1,0 +1,27 @@
+{
+  "name": "webpack-s3-pusher",
+  "version": "0.9.0",
+  "description": "A webpack plugin that pushes your packed assets to your S3 bucket, no more, no less.",
+  "main": "webpack.s3.pusher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olsgreen/webpack-s3-pusher.git"
+  },
+  "keywords": [
+    "s3",
+    "webpack",
+    "node",
+    "upload",
+    "production",
+    "laravel-mix",
+    "laravel"
+  ],
+  "author": "Oliver Green",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.291.0"
+  }
+}
