@@ -22,6 +22,7 @@
   "author": "Oliver Green",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.291.0"
+    "aws-sdk": "^2.291.0",
+    "cli-progress": "^3.0.0"
   }
 }
