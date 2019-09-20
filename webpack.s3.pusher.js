@@ -18,11 +18,11 @@ function S3PusherPlugin(options) {
   }
 
   if (options.include) {
-    this.include = options.include;
+    this.include = new RegExp(options.include);
   }
 
   if (options.exclude) {
-    this.exclude = options.exclude;
+    this.exclude = new RegExp(options.exclude);
   }
 
   if (options.quiet) {
