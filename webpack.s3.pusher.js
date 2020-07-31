@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const progress = require('cli-progress');
+const mime = require('mime-types');
 
 let s3;
 let bar;
@@ -76,11 +77,9 @@ S3PusherPlugin.prototype.upload = function(filename, content) {
       Body: content
     };
 
-    /**
-     * @todo We should use a MIME sniffer on all files.
-     */
-    if (filename.slice(-3) === 'css') {
-      params.ContentType = 'text/css';
+    let contentType = mime.lookup(filename)
+    if (contentType) {
+        params.ContentType = contentType;
     }
 
     s3.putObject(params, (err, data) => {
