@@ -104,7 +104,7 @@ S3PusherPlugin.prototype.log = function(message) {
 }
 
 S3PusherPlugin.prototype.apply = function(compiler) {
-  compiler.hooks.emit.tap("S3PusherPlugin", (compilation, callback) => {
+  compiler.hooks.emit.tapAsync("S3PusherPlugin", (compilation, callback) => {
     for (var filename in compilation.assets) {
       if (this.shouldUpload(filename)) {
         this.assets.push(filename);
@@ -114,7 +114,7 @@ S3PusherPlugin.prototype.apply = function(compiler) {
     callback();
   });
 
-  compiler.hooks.afterEmit.tap("S3PusherPlugin", (compilation, cb) => {
+  compiler.hooks.afterEmit.tapAsync("S3PusherPlugin", (compilation, cb) => {
     (async () => {
       this.log('\r\n\r\nUploading ' + this.assets.length + ' assets to \'' + this.bucket + '\'...')
 
