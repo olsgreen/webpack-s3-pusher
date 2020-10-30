@@ -1,6 +1,6 @@
 {
   "name": "webpack-s3-pusher",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A webpack plugin that pushes your packed assets to your S3 bucket, no more, no less.",
   "main": "webpack.s3.pusher.js",
   "scripts": {
