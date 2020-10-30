@@ -104,15 +104,17 @@ S3PusherPlugin.prototype.log = function(message) {
 }
 
 S3PusherPlugin.prototype.apply = function(compiler) {
-  compiler.hooks.emit.tap("S3PusherPlugin", (compilation) => {
+  compiler.hooks.emit.tap("S3PusherPlugin", (compilation, callback) => {
     for (var filename in compilation.assets) {
       if (this.shouldUpload(filename)) {
         this.assets.push(filename);
       }
     }
+
+    callback();
   });
 
-  compiler.hooks.afterEmit.tap("S3PusherPlugin", (compilation) => {
+  compiler.hooks.afterEmit.tap("S3PusherPlugin", (compilation, cb) => {
     (async () => {
       this.log('\r\n\r\nUploading ' + this.assets.length + ' assets to \'' + this.bucket + '\'...')
 
@@ -146,7 +148,7 @@ S3PusherPlugin.prototype.apply = function(compiler) {
 
         await this.upload(remotePath, fs.readFileSync(localPath)).catch(e => {
           error = e
-          console.error(e)
+          cb(e)
         }); 
 
         if (error) {
