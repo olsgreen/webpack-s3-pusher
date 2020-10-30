@@ -1,6 +1,8 @@
 # webpack-s3-pusher
 A webpack plugin that pushes your packed assets to your S3 bucket, no more, no less.
 
+*For webpack < 4 support use version 1.x*
+
 ## Installation
 	npm install webpack-s3-pusher --save-dev
 	
