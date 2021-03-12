@@ -1,5 +1,5 @@
 # webpack-s3-pusher
-A webpack plugin that pushes your packed assets to your S3 bucket, no more, no less.
+A webpack plugin that pushes your packed assets to your S3 compatible bucket, no more, no less.
 
 *For webpack < 4 support use version 1.x*
 
@@ -41,7 +41,7 @@ A webpack plugin that pushes your packed assets to your S3 bucket, no more, no l
 
 You can also use a credentials file from AWS rather than passing them.
 	
-## Push assets to S3 from Laravel Mix
+## Push assets from Laravel Mix
 .env
 	
 	APP_ASSETS_AWS_KEY=your_key
@@ -81,7 +81,7 @@ webpack.mix.js:
 	   .sass('resources/assets/sass/app.scss', 'public/css')
    	   .version();
 	
-Then you will be able to push to S3 using:
+Then you will be able to push to your bucket using:
 
 	npm run production
 	// or
