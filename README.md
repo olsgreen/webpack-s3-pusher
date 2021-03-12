@@ -8,7 +8,7 @@ A webpack plugin that pushes your packed assets to your S3 compatible bucket, no
 	
 ## Configuration
 	new S3PusherPlugin({
-		 // Target bucket
+	    // Target bucket
 	    bucket: 'BUCKET',
 	    // If your not using a bucket with a default public 
 	    // ACL uncomment the below:
