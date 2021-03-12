@@ -30,12 +30,21 @@ function S3PusherPlugin(options) {
     this.quiet = options.quiet
   }
 
-  if (options.key && options.secret && options.region) {
-    AWS.config.update({
+  if (options.key && options.secret && (options.region || options.endpoint)) {
+    const config = {
       accessKeyId: options.key, 
-      secretAccessKey: options.secret, 
-      region: options.region
-    })  
+      secretAccessKey: options.secret
+    }
+
+    if (options.region) {
+      config.region = options.region
+    }
+
+    if (options.endpoint) {
+      config.endpoint = options.endpoint
+    }
+
+    AWS.config.update(config) 
   }
 
   s3 = new AWS.S3();
@@ -43,6 +52,8 @@ function S3PusherPlugin(options) {
   if (options.remove) {
     this.removePaths(options.remove)
   }
+
+  this.acl = options.acl || 'private';
 }
 
 S3PusherPlugin.prototype.removePaths = function(paths) {
@@ -75,7 +86,11 @@ S3PusherPlugin.prototype.upload = function(filename, content) {
       Bucket: this.bucket, 
       Key: filename, 
       Body: content
-    };
+    }
+
+    if (this.acl) {
+       params.ACL = this.acl
+    }
 
     let contentType = mime.lookup(filename)
     if (contentType) {
