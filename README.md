@@ -10,11 +10,16 @@ A webpack plugin that pushes your packed assets to your S3 bucket, no more, no l
 	new S3PusherPlugin({
 		 // Target bucket
 	    bucket: 'BUCKET',
+	    acl: 'public-read',
 	    
 	    // Set the credentials.
 	    key: 'KEY',
 	    secret: 'SECRET',
+
+	    // Set the region or endpointif using another provider.
 	    region: 'us-west-2',
+	    // OR
+	    //endpoint: 'https://nyc3.digitaloceanspaces.com',
 	    
 	    // Publish to 'assets' folder
 	    prefix: 'assets',        
@@ -32,7 +37,7 @@ A webpack plugin that pushes your packed assets to your S3 bucket, no more, no l
 	    ]
 	})
 
-You can also use a credentials file from AWS rather than passing the 
+You can also use a credentials file from AWS rather than passing them.
 	
 ## Push assets to S3 from Laravel Mix
 .env
@@ -61,8 +66,8 @@ webpack.mix.js:
 	            key: process.env.APP_ASSETS_AWS_KEY,
 	            secret: process.env.APP_ASSETS_AWS_SECRET,
 	            region: process.env.APP_ASSETS_AWS_REGION,
-				//endpoint: process.env.APP_ASSETS_AWS_ENDPOINT, #If not using AWS S3, comment out region
- 				//acl: APP_ASSETS_AWS_ACL, #Not using a public bucket? can be 'private' or 'public-read'
+	            //endpoint: process.env.APP_ASSETS_AWS_ENDPOINT, #If not using AWS S3, comment out region
+	            //acl: APP_ASSETS_AWS_ACL, #Not using a public bucket? can be 'private' or 'public-read'
 	            bucket: process.env.APP_ASSETS_AWS_BUCKET
 	        })
 	    )
