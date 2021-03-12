@@ -53,7 +53,9 @@ function S3PusherPlugin(options) {
     this.removePaths(options.remove)
   }
 
-  this.acl = options.acl || 'private';
+  if (options.acl) {
+    this.acl = options.acl
+  }
 }
 
 S3PusherPlugin.prototype.removePaths = function(paths) {
