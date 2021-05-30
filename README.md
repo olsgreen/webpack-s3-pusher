@@ -1,91 +1,97 @@
 # webpack-s3-pusher
-A webpack plugin that pushes your packed assets to your S3 compatible bucket, no more, no less.
 
-*For webpack < 4 support use version 1.x*
+A webpack plugin that pushes your packed assets to S3 compatible bucket, no more, no less.
+
+_For webpack < 4 support use version 1.x_
 
 ## Installation
-	npm install webpack-s3-pusher --save-dev
-	
+
+```bash
+npm install webpack-s3-pusher
+```
+
 ## Configuration
-	new S3PusherPlugin({
-	    // Target bucket
-	    bucket: 'BUCKET',
-	    // If your not using a bucket with a default public 
-	    // ACL uncomment the below:
-	    // acl: 'public-read',
-	    
-	    // Set the credentials.
-	    key: 'KEY',
-	    secret: 'SECRET',
 
-	    // Set the region or endpointif using another provider.
-	    region: 'us-west-2',
-	    // OR
-	    //endpoint: 'https://nyc3.digitaloceanspaces.com',
-	    
-	    // Publish to 'assets' folder
-	    prefix: 'assets',        
-	    
-	    // Include css & js files   
-	    include: '/.*\.(css|js)/'
-	    
-	    // Exclude minified JS files
-	    exclude: '/.*.min.js/'      
-	    
-	    // Remove files from the bucket before upload.
-	    remove: [                   
-	    	'path/to/file1.js',
-	    	'path/to/file2.js',
-	    ]
-	})
+```javascript
+new S3PusherPlugin({
+    key: 'your_key',
+    secret: 'your_secret',
 
-You can also use a credentials file from AWS rather than passing them.
-	
-## Push assets from Laravel Mix
+    // If you are using Amazon S3 then only set region.
+    // However if you are using some other provider then set only endpoint.
+    // Region and endpoint both should not be set together.
+
+    region: 'us-west-2',
+    // endpoint: 'https://sgp1.digitaloceanspaces.com,
+
+    bucket: 'bucket_name',
+    acl: 'public-read', // If you are not using a bucket with default public permissions
+    cache: 'max-age=602430', // Set Cache-Control header
+    prefix: 'assets', // Publish to a folder instead of root directory
+
+    include: '/.*\.(css|js)/',
+    exclude: '/.*.min.js/',
+    remove: [
+        'path/to/file1.js',
+        'path/to/file2.js',
+    ], // Remove files from the bucket before upload.
+})
+```
+
+## Laravel Mix Implementation
+
 .env
-	
-	APP_ASSETS_AWS_KEY=your_key
-	APP_ASSETS_AWS_SECRET=your_secret
-	APP_ASSETS_AWS_REGION=your_region
-	APP_ASSETS_AWS_BUCKET=your_bucket
-	//APP_ASSETS_AWS_ENDPOINT=your_endpoint #Set to your provider endpoint if not using AWS S3
- 	//APP_ASSETS_AWS_ACL=your_acl #Set if your're not using a public bucket, can be 'private' or 'public-read'
-	APP_CDN_URL=http://my-bucket.s3-website.eu-west-2.amazonaws.com
-	
-webpack.mix.js:
 
-	const { mix } = require('laravel-mix');
-	const S3PusherPlugin = require('webpack-s3-pusher')
-	
-	let config = {
-	    plugins: [],
-	};
-	
-	if (process.env.npm_config_env === 'staging' || process.env.NODE_ENV === 'production') {
-	    config.output.publicPath = process.env.APP_CDN_URL + '/';
-	    config.plugins.push(
-	        new S3PusherPlugin({
-	            key: process.env.APP_ASSETS_AWS_KEY,
-	            secret: process.env.APP_ASSETS_AWS_SECRET,
-	            region: process.env.APP_ASSETS_AWS_REGION,
-	            //endpoint: process.env.APP_ASSETS_AWS_ENDPOINT, #If not using AWS S3, comment out region
-	            //acl: APP_ASSETS_AWS_ACL, #Not using a public bucket? can be 'private' or 'public-read'
-	            bucket: process.env.APP_ASSETS_AWS_BUCKET
-	        })
-	    )
-	}
-	
-	mix.webpackConfig(config);
-	
-	mix.js('resources/assets/js/app.js', 'public/js')
-	   .sass('resources/assets/sass/app.scss', 'public/css')
-   	   .version();
-	
-Then you will be able to push to your bucket using:
+```env
+S3_KEY=your_key
+S3_SECRET=your_secret
+S3_BUCKET=your_bucket
 
-	npm run production
-	// or
-	npm run dev --env=staging
-	
+# If you are using Amazon S3 then only set region.
+# However if you are using some other provider then only set endpoint.
+# Region and endpoint both should not be set together.
+
+S3_REGION=your_region
+# S3_ENDPOINT=your_endpoint
+```
+
+webpack.mix.js
+
+```javascript
+const mix = require('laravel-mix');
+const S3PusherPlugin = require('webpack-s3-pusher');
+
+if (mix.inProduction()) {
+    mix.webpackConfig({
+        plugins: [
+            new S3PusherPlugin({
+                key: process.env.S3_KEY,
+                secret: process.env.S3_SECRET,
+                bucket: process.env.S3_BUCKET,
+                region: process.env.S3_REGION,
+                // endpoint: process.env.S3_ENDPOINT,
+                prefix: 'assets',
+                acl: 'public-read',
+                cache: 'max-age=602430',
+            })
+        ]
+    });
+}
+
+mix.js('resources/js/app.js', 'public/js')
+    .postCss('resources/css/app.css', 'public/css');
+```
+
+Push assets to bucket
+
+```bash
+npm run production
+```
+
 ## Contributing
-Pull requests welcome 🙂
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
