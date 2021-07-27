@@ -50,6 +50,8 @@ S3_BUCKET=your_bucket
 # If you are using Amazon S3 then only set region.
 # However if you are using some other provider then only set endpoint.
 # Region and endpoint both should not be set together.
+# If you want to to force path style URLs for S3 objects Set AWS_USE_PATH_STYLE_ENDPOINT as a true
+# It will replace  https://{service}.{region}.amazonaws.com to the endpoint 
 
 S3_REGION=your_region
 # S3_ENDPOINT=your_endpoint
@@ -70,6 +72,7 @@ if (mix.inProduction()) {
                 bucket: process.env.S3_BUCKET,
                 region: process.env.S3_REGION,
                 // endpoint: process.env.S3_ENDPOINT,
+                // s3ForcePathStyle: process.env.AWS_USE_PATH_STYLE_ENDPOINT, //#(endpoint required)
                 prefix: 'assets',
                 acl: 'public-read',
                 cache: 'max-age=602430',
