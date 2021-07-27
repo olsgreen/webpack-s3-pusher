@@ -44,6 +44,10 @@ function S3PusherPlugin(options) {
       config.endpoint = options.endpoint
     }
 
+    if (options.s3ForcePathStyle) {
+        config.s3ForcePathStyle = options.s3ForcePathStyle
+    }
+    
     AWS.config.update(config)
   }
 
